@@ -77,4 +77,35 @@ document.addEventListener('DOMContentLoaded', function() {
         cadastroSection.style.display = 'block'; // Mostrar formulário
         form.reset(); //Resetar os campos
     });
+    document.addEventListener('DOMContentLoaded', () => {
+        const inputPesquisa = document.getElementById('pesquisa');
+        const listaOculta = document.getElementById('lista-oculta');
+        const itensLista = listaOculta.getElementsByTagName('li');
+    
+        inputPesquisa.addEventListener('input', () => {
+            const termo = inputPesquisa.value.toLowerCase().trim();
+    
+            if (termo === '') {
+                listaOculta.style.display = 'none';
+                return;
+            }
+    
+            listaOculta.style.display = 'block';
+    
+            let algumResultado = false;
+            Array.from(itensLista).forEach(item => {
+                const nome = item.dataset.nome.toLowerCase();
+                const area = item.dataset.area.toLowerCase();
+                const corresponde = nome.includes(termo) || area.includes(termo);
+                item.style.display = corresponde ? 'list-item' : 'none';
+                if (corresponde) algumResultado = true;
+            });
+    
+            if (!algumResultado) {
+                listaOculta.innerHTML = '<li>Nenhum profissional encontrado.</li>';
+            }
+        });
+    });
+    
+
 });
